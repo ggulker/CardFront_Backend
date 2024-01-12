@@ -26,10 +26,13 @@ public class UserController {
     private UserRepository userRepository;
     
 	@PutMapping("/password/{uid}")
-	public void resetPassword(@PathVariable String uid) {
+	public ResponseEntity resetPassword(@PathVariable String uid) {
 		User email = userRepository.findByUsername(uid);
-
-		System.out.println(uid);
+		if(email != null){
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 

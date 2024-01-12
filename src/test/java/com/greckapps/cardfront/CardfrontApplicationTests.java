@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.greckapps.cardfront.user.User;
 import com.greckapps.cardfront.user.UserRepository;
+import com.greckapps.cardfront.utils.Emailer;
 
 @SpringBootTest
 class CardfrontApplicationTests {
@@ -23,4 +24,9 @@ class CardfrontApplicationTests {
 		userRepository.save(user);
 	}
 
+	@Test
+	void SendEmail(){
+		Emailer mailer = new Emailer();
+		mailer.SendMail("gagulker@gmail.com", "TEST", "Attempting to test email capabilities");
+	}
 }
