@@ -1,32 +1,26 @@
 package com.greckapps.cardfront;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.greckapps.cardfront.user.User;
-import com.greckapps.cardfront.user.UserRepository;
-import com.greckapps.cardfront.utils.Emailer;
+import com.greckapps.cardfront.user.UserApplication;
+import com.greckapps.cardfront.utils.TokenHandler;
 
-@SpringBootTest
+import io.jsonwebtoken.Claims;
+
+
+@SpringBootTest(classes = UserApplication.class)
 class CardfrontApplicationTests {
-	
-	@Autowired
-	UserRepository userRepository;
-	
 	@Test
-	void CreateNewUser() {
-		User user = new User();
-		user.setEmail("test.test@test.com");
-		user.setUser_id("java_test");
-		user.setPass_enc("pass");
-	
-		userRepository.save(user);
-	}
-
-	@Test
-	void SendEmail(){
-		Emailer mailer = new Emailer();
-		mailer.SendMail("gagulker@gmail.com", "TEST", "Attempting to test email capabilities");
+	void CreateToken()
+	{
+		String token = TokenHandler.createStandToken("usernameTest");
+		Claims returned = TokenHandler.decodeKey(token);
+		System.out.println(returned.get("sub"));
 	}
 }

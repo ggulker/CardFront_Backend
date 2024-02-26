@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.greckapps.cardfront.forms.LoginForm;
 import com.greckapps.cardfront.forms.RegisterForm;
+import com.greckapps.cardfront.utils.TokenHandler;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class UserController {
     
 	@PutMapping("/password/{uid}")
 	public ResponseEntity resetPassword(@PathVariable String uid) {
-		User email = userRepository.findByUsername(uid);
-		if(email != null){
+		User emailUser = userRepository.findByUsername(uid);
+		if(emailUser != null){
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		else
@@ -37,18 +38,20 @@ public class UserController {
 	
 
 	@PostMapping
-	public ResponseEntity<User> loginAuth(@RequestBody LoginForm loginForm ) {
+	public ResponseEntity<String> loginAuth(@RequestBody LoginForm loginForm ) {
 		User foundUser = userRepository.findByUsername(loginForm.getUsername());
 		if(foundUser != null)
 		{
-			if(loginForm.getPassword().equals(foundUser.getPass_enc()))
-				return new ResponseEntity<>(foundUser, HttpStatus.OK);
+			if(loginForm.getPassword().equals(foundUser.getPass_enc())){
+				
+				return new ResponseEntity<>(TokenHandler.createStandToken(loginForm.getUsername()), HttpStatus.OK);
+			}
 			else
-				return new ResponseEntity<>(new User(), HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
 		}
 		else
 		{
-			return new ResponseEntity<>(new User(), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
 		}
 	}
 	

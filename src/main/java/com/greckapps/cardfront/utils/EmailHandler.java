@@ -5,7 +5,7 @@ import com.sendgrid.SendGridException;
 
 
 
-public class Emailer {
+public class EmailHandler {
     static SendGrid sendgrid = new SendGrid(System.getenv("sendgrid_key"));
     static String from = "greck@greck.icu";
 
