@@ -44,14 +44,14 @@ public class UserController {
 		{
 			if(loginForm.getPassword().equals(foundUser.getPass_enc())){
 				
-				return new ResponseEntity<>(TokenHandler.createStandToken(loginForm.getUsername()), HttpStatus.OK);
+				return new ResponseEntity<String>(TokenHandler.createStandToken(loginForm.getUsername()), HttpStatus.OK);
 			}
 			else
-				return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>(" ", HttpStatus.NOT_FOUND);
 		}
 		else
 		{
-			return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(" ", HttpStatus.NOT_FOUND);
 		}
 	}
 	

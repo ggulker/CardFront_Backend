@@ -48,11 +48,42 @@ public class TokenHandler {
         return createToken(issuer, username, timeToExpire);
     }
 
-    public static Claims decodeKey(String jwt) {
+    private static Claims decodeToken(String jwt) {
         //This line will throw an exception if it is not a signed JWS (as expected)
         JwtParser parser = Jwts.parserBuilder().setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY)).build();
         Claims claims = parser.parseClaimsJws(jwt).getBody();
         return claims;
     }
+
+    public static boolean ValidateToken(String jwt)
+    {
+        try{
+            Claims claims = decodeToken(jwt);
+            Date now = new Date();
+            if(claims.getExpiration().after(now)){
+                return true;
+            }
+            else{
+                System.out.println("INFO::TOKEN EXPIRED RETURNING TO LOGIN");
+                return false;
+            }
+        }
+        catch(Exception e)
+        {
+            System.err.println("ERROR::POSSIBLE INVALID TOKEN HAS BEEN SENT");
+            return false;
+        }
+    }
     
+    public static String getTokenSubject(String jwt)
+    {
+        try{
+            return decodeToken(jwt).getSubject();
+        }
+        catch(Exception e)
+        {
+            System.err.println("ERROR::POSSIBLE INVALID TOKEN HAS BEEN SENT");
+            return "";
+        }
+    }
 }
