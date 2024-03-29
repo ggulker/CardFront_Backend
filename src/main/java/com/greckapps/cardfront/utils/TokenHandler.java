@@ -74,7 +74,7 @@ public class TokenHandler {
             return false;
         }
     }
-    
+
     public static String getTokenSubject(String jwt)
     {
         try{
