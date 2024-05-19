@@ -1,5 +1,6 @@
 package com.greckapps.cardfront.user;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,24 +13,29 @@ public class User {
 	  @Id
 	  @GeneratedValue(strategy=GenerationType.AUTO)
 	  private Integer user_key;
-	  private String user_id, pass_enc, email, user_uuid;
+	  @Column(name = "user_id", nullable = false, unique = true)
+	  private String userId;
+	  @Column(name = "pass_enc", nullable = false, unique = true)
+	  private String passEnc;
+	  @Column(name = "email", nullable = false, unique = false)
+	  private String email;
 	  
 	public Integer getUser_key() {
 		return user_key;
 	}
 	
 	public String getUser_id() {
-		return user_id;
+		return userId;
 	}
 	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+		this.userId = user_id;
 	}
 	
 	public String getPass_enc() {
-		return pass_enc;
+		return passEnc;
 	}
 	public void setPass_enc(String pass_enc) {
-		this.pass_enc = pass_enc;
+		this.passEnc = pass_enc;
 	}
 	
 	public String getEmail() {
@@ -39,11 +45,9 @@ public class User {
 		this.email = email;
 	}
 	
-	public void setUUID(String uuid)
+	@Override
+	public String toString()
 	{
-		user_uuid = uuid;
+		return "USERID: " + userId + "\nPASSENC: " + passEnc + "\nEmail: " + email;
 	}
-	public String getUUID() {
-		return user_uuid;
-	}  
 }

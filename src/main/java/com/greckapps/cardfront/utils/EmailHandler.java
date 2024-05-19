@@ -15,25 +15,27 @@ public class EmailHandler {
     static SendGrid sendgrid = new SendGrid(System.getenv("sendgrid_key"));
     static String from = "greck@greck.icu";
 
+    //send email to passed in address from database all email fields pulled from DB 
     public void SendMail(String to, String emailid, HashMap<String,String> additions){
         Email email = emailRepository.findByEmailId(emailid);
-        System.out.println(System.getenv("sendgrid_key"));
         SendGrid.Email mail = new SendGrid.Email();
         mail.setFrom(from);
         mail.addTo(to);
-        String subject = email.getEmail_sub();
+        mail.setSubject( email.getEmail_sub());
+        String text = email.getEmail_text();
         for (HashMap.Entry<String, String> entry : additions.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            subject = subject.replace(key, value);
-        }
-        mail.setSubject(subject);
-        mail.setText(email.getEmail_text());
-        
-        try {
+            text = text.replace(key, value);
+        }    
+        mail.setText(text);
+        try 
+        {
             SendGrid.Response response = sendgrid.send(mail);
             System.out.println(response.getMessage());
-        } catch (SendGridException sge) {
+        }
+        catch (SendGridException sge) 
+        {
             sge.printStackTrace();
         }
     }
